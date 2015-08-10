@@ -2,9 +2,6 @@
 @personas =[{
                 nombre:"Nombre", puntos: "Puntos", aporte:"Aporte"
             }]
-
-
-
 @options = [
     "1) Ingresar Estudiante",
     "2) Ver puntos",
@@ -13,7 +10,6 @@
     "5) Reiniciar puntos",
     "6) Salir"
 ]
-
 @file_path= "lista.txt"
 @band = false
 
@@ -110,9 +106,11 @@ def ver_puntos
     #puts "Nombre - Puntos"
     puts "-------------------------------------------------------------------"
     @personas.each_with_index do |persona, index|
-      puts "#{index} - #{persona[:nombre]} - #{persona[:puntos]} - $#{persona[:aporte]}"
-
-
+      if index>=1
+        puts "#{index} - #{persona[:nombre]} - #{persona[:puntos]} - $#{persona[:aporte]}"
+      else
+        puts "No. - #{persona[:nombre]} - #{persona[:puntos]} - #{persona[:aporte]}"
+      end
     end
     puts "-------------------------------------------------------------------"
     puts "Presione Enter para continuar"
@@ -129,8 +127,8 @@ def addpunto
   #@personas.each_with_index do |persona, index|
     #puts "#{index} - #{persona[:nombre]} - #{persona[:puntos]}"
   #end
-    ver_puntos
-  puts "A quien desea agregar el punto"
+  ver_puntos
+  puts "Ingrese el numero de la persona"
   l=(@personas.length)-1
   loop do
     p=gets.chomp.to_i
@@ -140,15 +138,15 @@ def addpunto
     else
       puts 'Ingrese una opcion válida'
     end
+  end
+
+  puts 'Cuantos puntos?'
+  cant=gets.chomp.to_i
+  @personas[p][:puntos]=@personas[p][:puntos].to_i+cant
+  save_in_file()
 end
 
-puts 'Cuantos puntos?'
-cant=gets.chomp.to_i
-@personas[p][:puntos]=@personas[p][:puntos].to_i+cant
-save_in_file()
-end
-
-
+#---------Calculo de la cuota
 
 def calcula_pizza
   totalp=0
@@ -171,15 +169,17 @@ def calcula_pizza
       puts "Ingrese informacion valida"
     end
   end
-
   f=totald/totalp
-
-  @personas.each do |persona|
+  @personas.each_with_index do |persona, index|
+    if index >= 1
     persona[:aporte]=persona[:puntos].to_i*f
+    end
   end
   save_in_file()
   ver_puntos
 end
+
+#-------funcion para borrar puntos y aportes
 
 def reset_points
     cont=0
@@ -188,7 +188,6 @@ def reset_points
       persona[:puntos]=0
       persona[:aporte]=0
       else
-
       end
     end
     save_in_file
@@ -196,18 +195,10 @@ def reset_points
     gets.chomp
 end
 
-# @return [Object]
+#----funcion para limpiar la pantalla
 def clear
   system('clear')
 end
-
-
-
-
-
-
-
-
   load
   menu
 
