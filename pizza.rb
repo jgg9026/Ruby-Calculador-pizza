@@ -8,7 +8,8 @@
     "3) Agregar punto(s)",
     "4) Calcular pizza",
     "5) Reiniciar puntos",
-    "6) Salir"
+    "6) Borrar estudiante",
+    "7) Salir"
 ]
 @file_path= "lista.txt"
 @band = false
@@ -31,17 +32,43 @@
         when '5'
           reset_points
         when '6'
+          delete_est
+        when '7'
           puts "Chao..."
-          break;
+          break
 
         else
-          puts "Ingrese una opcion correcta" if choice!='1' || choice!='2' || choice!='3' || choice!='4' || choice!='5'|| choice!='6'
+          puts "Ingrese una opcion correcta" if choice!='1' || choice!='2' || choice!='3' || choice!='4' || choice!='5'|| choice!='6' || choice!='7'
 
       end
     end
  end
 
+def delete_est
+  choice=0
+  l=@personas.length.to_i
+  if l==1
+    pust "No hay datos para eliminar"
+  end
+  ver_puntos
+  puts "Ingrese el numero de la persona a borrar"
+  loop do
+  choice=gets.chomp.to_i
+    if choice>0 && choice<l
+      break
+    else
+      puts "Ingrese una opcion valida"
+    end
+  end
+  if @personas.delete_at(choice)
+      puts "Registro borrado, presione enter para continuar"
+  else
+      puts "Registro no borrado, presione enter para continuar"
 
+  end
+  save_in_file
+  gets.chomp
+end
 #-----------Funcion de carga
 
 def load
@@ -198,6 +225,7 @@ end
 #----funcion para limpiar la pantalla
 def clear
   system('clear')
+
 end
   load
   menu
